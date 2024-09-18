@@ -1,0 +1,39 @@
+name: Convert Logs to Excel
+
+on:
+  schedule:
+    # Run the job every day at 00:30 UTC
+    - cron: '30 0 * * *'
+  workflow_dispatch:  # Allows manual triggering of the job
+
+jobs:
+  convert_logs_to_excel:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.x'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pandas
+
+    - name: Download logs
+      run: |
+        curl -o logs.txt https://jsonplaceholder.typicode.com/posts  # Example URL, adjust as needed
+
+    - name: Convert logs to Excel
+      run: python convert_to_excel.py
+
+    - name: Upload Excel as artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: logs-excel-artifact
+        path: logs_output.xlsx
+        retention-days: 7  # Store the artifact for 7 days
