@@ -22,7 +22,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install pandas openpyxl  # Add openpyxl to handle Excel writing
+        pip install pandas openpyxl  # Add openpyxl for Excel writing
 
     - name: Download logs
       run: |
@@ -32,7 +32,7 @@ jobs:
       run: python convert_to_excel.py
 
     - name: Upload Excel as artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4  # Updated to v4
       with:
         name: logs-excel-artifact
         path: logs_output.xlsx
